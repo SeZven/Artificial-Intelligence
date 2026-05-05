@@ -28,10 +28,15 @@ class DiceGamePig:
         else:
             self.turnTotal += dice
             if dice == 6:
-                self.roll()
+                self.forcedRoll = True
+            else:
+                self.forcedRoll = False
+            #if dice == 6:
+            #    self.roll()
 
     def switchCurrentPlayer(self):
         self.turnTotal = 0
+        self.forcedRoll = False
         self.currentPlayer = (self.currentPlayer + 1) % 2
 
         
@@ -42,9 +47,10 @@ class DiceGamePig:
         self.switchCurrentPlayer()
 
     def turn(self, action):
-        if action == ROLL:
+
+        if self.forcedRoll or action == ROLL:
             self.roll()
-        if action == ENDTURN:
+        elif action == ENDTURN:
             self.endTurn()
         
         return self.getState()
@@ -54,6 +60,7 @@ class DiceGamePig:
         self.currentPlayer = random.randint(0,1) # choose starting player at random
         self.turnTotal = 0 # points in current turn for the current player
         self.win = False # no winner at the start
+        self.forcedRoll = False # no forced roll at the start
         return self.getState()
 
 
@@ -117,12 +124,12 @@ class QLearningAgent:
 
 
 def dummy(state):
-    #return random.choice([ROLL, ENDTURN])
-    turnTotal = state[2]
-    if turnTotal < 15:
-        return ROLL
-    else:
-        return ENDTURN
+    return random.choice([ROLL, ENDTURN])
+    #turnTotal = state[2]
+    #if turnTotal < 15:
+    #    return ROLL
+    #else:
+    #    return ENDTURN
 
 def train(agent, episodes):
     game = DiceGamePig()
@@ -178,15 +185,43 @@ def evaluate(agent, games):
 
     return wins / games
 
+def playAgainstAgent(agent):
+    game = DiceGamePig()
+
+    while not game.win:
+        print("\n------------------")
+        print("Scores:", game.scores)
+        print("Current player:", game.currentPlayer)
+        print("Turn total:", game.turnTotal)
+
+        if game.currentPlayer == 0:
+            action = agent.chooseAction(game.getState())
+            print("Agent chooses:", action)
+        else:
+            if game.forcedRoll: # automatically choose roll action if 6 is rolled
+                print("You rolled a 6, you must roll again.")
+                action = ROLL
+            else:
+                action = input("Choose (roll / endTurn): ").strip()
+                while action not in [ROLL, ENDTURN]:
+                    action = input("Invalid. Choose (roll / endTurn): ").strip()           
+
+        game.turn(action)
+
+    print("\nFinal scores:", game.scores)
+    print("Winner is", "Agent" if game.scores[0] >= GOAL else "Human")
+
 
 if __name__ == "__main__":
     agent = QLearningAgent()
 
-    train(agent, episodes=1000)
+    train(agent, episodes=100000)
+    
+    #agent.epsilon = 0 # to disable exploration during evaluation
     winrate = evaluate(agent, games=1000)
+    print("Winrate:", winrate)
 
-
-    print("Win rate:", winrate)
+   # playAgainstAgent(agent)
 
 
 
