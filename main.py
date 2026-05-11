@@ -220,25 +220,22 @@ import pickle
 import os
 from tqdm import trange
 
-def save_agent(agent, filename="agent.pkl"):
+def saveAgent(agent, filename):
     with open(filename, "wb") as f:
         pickle.dump(dict(agent.Q), f)
 
-def load_agent(agent, filename="agent.pkl"):
+def loadAgent(agent, filename):
     with open(filename, "rb") as f:
         data = pickle.load(f)
     agent.Q = defaultdict(lambda: {ROLL: 0, ENDTURN: 0}, data)
 
-def train_and_save(episodes_list):
-    for episodes in episodes_list:
+def trainAndSave(episodesList):
+    for episodes in episodesList:
         filename = f"agent_{episodes}.pkl"
         if not os.path.exists(filename):
             agent = QLearningAgent()
             train(agent, episodes)
-
-        
-            save_agent(agent, filename)
-
+            saveAgent(agent, filename)
             print(f"Saved {filename}")
         else:
             print(f"File {filename} already exists")
@@ -257,13 +254,13 @@ if __name__ == "__main__":
 
     #playAgainstAgent(agent)
 
-    episodesList = [100, 1000, 10000, 100000, 1000000, 10000000] #, 100000000, 1000000000 ]
-    train_and_save(episodesList) # A .pkl file is a saved Python object in binary form using the pickle module.
+    episodesList = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 ]
+    trainAndSave(episodesList) # A .pkl file is a saved Python object in binary form using the pickle module.
     # converting your Python object into bytes and saving it to disk
 
     for e in episodesList:
-        load_agent(agent, f"agent_{e}.pkl")
-        print(evaluate(agent, 100000))
+        loadAgent(agent, f"agent_{e}.pkl")
+        print(evaluate(agent, 10000))
 
     playAgainstAgent(agent)
 
