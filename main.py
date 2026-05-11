@@ -18,8 +18,15 @@ class DiceGamePig:
         self.reset()
 
     def getState(self):
-        return (self.scores[0], self.scores[1], self.turnTotal, self.currentPlayer) # score of player 1 and 2, points in current turn of current player, current player
+        #return (self.scores[0], self.scores[1], self.turnTotal, self.currentPlayer) # score of player 1 and 2, points in current turn of current player, current player
         # self.scores, self.turnTotal, self.currentPlayer
+        return (
+            self.scores[0], # agents score
+            self.scores[1], # opponents score
+            self.turnTotal, # current players turn total
+            self.currentPlayer, # active player
+            self.forcedRoll # 6 was rolled in previous turn or not
+            )
 
     def roll(self):
         dice = random.randint(1,6)
@@ -110,6 +117,8 @@ class QLearningAgent:
         self.epsilon = 0.1
 
     def chooseAction(self, state):
+        if state[4]: # forcedRoll
+            return ROLL
 
         if random.random() < self.epsilon:
             return random.choice([ROLL, ENDTURN])
@@ -231,7 +240,7 @@ def loadAgent(agent, filename):
 
 def trainAndSave(episodesList):
     for episodes in episodesList:
-        filename = f"agent_{episodes}.pkl"
+        filename = f"agent{episodes}.pkl"
         if not os.path.exists(filename):
             agent = QLearningAgent()
             train(agent, episodes)
@@ -254,25 +263,26 @@ if __name__ == "__main__":
 
     #playAgainstAgent(agent)
 
-    episodesList = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 ]
+    episodesList = [100, 1000, 10000, 100000, 1000000]#, 10000000] #, 100000000, 1000000000 ]
     trainAndSave(episodesList) # A .pkl file is a saved Python object in binary form using the pickle module.
     # converting your Python object into bytes and saving it to disk
 
     for e in episodesList:
-        loadAgent(agent, f"agent_{e}.pkl")
+        loadAgent(agent, f"agent{e}.pkl")
         print(evaluate(agent, 10000))
 
     playAgainstAgent(agent)
 
 
-'''Training: 100%|██████████████████████████| 100/100 [00:00<00:00, 2743.46it/s]
-Saved agent_100.pkl
-Training: 100%|████████████████████████| 1000/1000 [00:00<00:00, 3049.22it/s]
-Saved agent_1000.pkl
-File agent_10000.pkl already exists
-File agent_100000.pkl already exists
-Training: 100%|██████████████████| 1000000/1000000 [02:25<00:00, 6890.10it/s]
-Saved agent_1000000.pkl
-Training: 100%|██████████████| 10000000/10000000 [1:05:45<00:00, 2534.82it/s]
-Saved agent_10000000.pkl
-File agent_10000000.pkl already exists'''
+"""
+Training: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3349.07it/s]
+Saved agent100.pkl
+Training: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [00:00<00:00, 3028.00it/s]
+Saved agent1000.pkl
+Training: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 3681.24it/s]
+Saved agent10000.pkl
+Training: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100000/100000 [00:19<00:00, 5262.25it/s]
+Saved agent100000.pkl
+Training: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000000/1000000 [02:30<00:00, 6625.25it/s]
+Saved agent1000000.pkl
+"""
