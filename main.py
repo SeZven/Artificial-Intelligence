@@ -24,7 +24,8 @@ class DiceGamePig:
             self.scores[0], # agents score
             self.scores[1], # opponents score
             self.turnTotal, # current players turn total
-            self.currentPlayer, # active player
+            #self.currentPlayer, # active player
+            # not needed because the agent is currentplayer when it is its turn
             self.forcedRoll # 6 was rolled in previous turn or not
             )
 
@@ -117,7 +118,7 @@ class QLearningAgent:
         self.epsilon = 0.1
 
     def chooseAction(self, state):
-        if state[4]: # forcedRoll
+        if state[-1]: # forcedRoll
             return ROLL
 
         if random.random() < self.epsilon:
@@ -269,8 +270,9 @@ if __name__ == "__main__":
 
     for e in episodesList:
         loadAgent(agent, f"agent{e}.pkl")
-        print(evaluate(agent, 10000))
+        print(evaluate(agent, 1))
 
+    #print(agent.Q)
     playAgainstAgent(agent)
 
 
