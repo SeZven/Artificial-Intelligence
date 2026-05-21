@@ -238,6 +238,7 @@ if __name__ == "__main__":
     trainAndSave(episodesList) # A .pkl file is a saved Python object in binary form using the pickle module.
     # converting your Python object into bytes and saving it to disk
 
+    agent.epsilon = 0
     for e in episodesList:
         loadAgent(agent, f"agent{e}.pkl")
         print(evaluate(agent, 1000))
@@ -257,4 +258,604 @@ Training: 100%|█████████████████████�
 Saved agent100000.pkl
 Training: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000000/1000000 [02:30<00:00, 6625.25it/s]
 Saved agent1000000.pkl
+"""
+
+
+"""
+------------------
+Scores: [0, 0]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [0, 0]
+Current player: 0
+Turn total: 6
+Agent chooses: roll
+
+------------------
+Scores: [0, 0]
+Current player: 0
+Turn total: 12
+Agent chooses: roll
+
+------------------
+Scores: [0, 0]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [0, 0]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [0, 0]
+Current player: 0
+Turn total: 4
+Agent chooses: endTurn
+
+------------------
+Scores: [4, 0]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [4, 0]
+Current player: 1
+Turn total: 3
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [4, 0]
+Current player: 1
+Turn total: 7
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [4, 0]
+Current player: 1
+Turn total: 9
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [4, 0]
+Current player: 1
+Turn total: 11
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [4, 0]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [4, 0]
+Current player: 0
+Turn total: 6
+Agent chooses: roll
+
+------------------
+Scores: [4, 0]
+Current player: 0
+Turn total: 9
+Agent chooses: endTurn
+
+------------------
+Scores: [13, 0]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [13, 0]
+Current player: 1
+Turn total: 6
+You rolled a 6, you must roll again.
+
+------------------
+Scores: [13, 0]
+Current player: 1
+Turn total: 10
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [13, 0]
+Current player: 1
+Turn total: 13
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [13, 0]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [13, 0]
+Current player: 0
+Turn total: 5
+Agent chooses: endTurn
+
+------------------
+Scores: [18, 0]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [18, 0]
+Current player: 1
+Turn total: 6
+You rolled a 6, you must roll again.
+
+------------------
+Scores: [18, 0]
+Current player: 1
+Turn total: 8
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [18, 0]
+Current player: 1
+Turn total: 13
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [18, 0]
+Current player: 1
+Turn total: 17
+Choose (roll / endTurn): endTurn
+
+------------------
+Scores: [18, 17]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [18, 17]
+Current player: 0
+Turn total: 5
+Agent chooses: endTurn
+
+------------------
+Scores: [23, 17]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll   
+
+------------------
+Scores: [23, 17]
+Current player: 1
+Turn total: 4
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [23, 17]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [23, 17]
+Current player: 0
+Turn total: 5
+Agent chooses: endTurn
+
+------------------
+Scores: [28, 17]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [28, 17]
+Current player: 1
+Turn total: 3
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [28, 17]
+Current player: 1
+Turn total: 8
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [28, 17]
+Current player: 1
+Turn total: 11
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [28, 17]
+Current player: 1
+Turn total: 15
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [28, 17]
+Current player: 1
+Turn total: 19
+Choose (roll / endTurn): endTurn                                                                                      
+
+------------------
+Scores: [28, 36]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [28, 36]
+Current player: 0
+Turn total: 3
+Agent chooses: endTurn
+
+------------------
+Scores: [31, 36]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll   
+
+------------------
+Scores: [31, 36]
+Current player: 1
+Turn total: 5
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [31, 36]
+Current player: 1
+Turn total: 8
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [31, 36]
+Current player: 1
+Turn total: 13
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [31, 36]
+Current player: 1
+Turn total: 18
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [31, 36]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [31, 36]
+Current player: 0
+Turn total: 3
+Agent chooses: roll
+
+------------------
+Scores: [31, 36]
+Current player: 0
+Turn total: 5
+Agent chooses: endTurn
+
+------------------
+Scores: [36, 36]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [36, 36]
+Current player: 1
+Turn total: 2
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [36, 36]
+Current player: 1
+Turn total: 8
+You rolled a 6, you must roll again.
+
+------------------
+Scores: [36, 36]
+Current player: 1
+Turn total: 13
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [36, 36]
+Current player: 1
+Turn total: 17
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [36, 36]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [36, 36]
+Current player: 0
+Turn total: 5
+Agent chooses: endTurn
+
+------------------
+Scores: [41, 36]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [41, 36]
+Current player: 1
+Turn total: 3
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [41, 36]
+Current player: 1
+Turn total: 9
+You rolled a 6, you must roll again.
+
+------------------
+Scores: [41, 36]
+Current player: 1
+Turn total: 11
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [41, 36]
+Current player: 1
+Turn total: 14
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [41, 36]
+Current player: 1
+Turn total: 17
+Choose (roll / endTurn): endTurn
+
+------------------
+Scores: [41, 53]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [41, 53]
+Current player: 0
+Turn total: 6
+Agent chooses: roll
+
+------------------
+Scores: [41, 53]
+Current player: 0
+Turn total: 8
+Agent chooses: endTurn
+
+------------------
+Scores: [49, 53]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll   
+
+------------------
+Scores: [49, 53]
+Current player: 1
+Turn total: 3
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [49, 53]
+Current player: 1
+Turn total: 9
+You rolled a 6, you must roll again.
+
+------------------
+Scores: [49, 53]
+Current player: 1
+Turn total: 15
+You rolled a 6, you must roll again.
+
+------------------
+Scores: [49, 53]
+Current player: 1
+Turn total: 18
+Choose (roll / endTurn): endTurn
+
+------------------
+Scores: [49, 71]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [49, 71]
+Current player: 0
+Turn total: 5
+Agent chooses: endTurn
+
+------------------
+Scores: [54, 71]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): endTurn
+
+------------------
+Scores: [54, 71]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [54, 71]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll   
+
+------------------
+Scores: [54, 71]
+Current player: 1
+Turn total: 4
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [54, 71]
+Current player: 1
+Turn total: 7
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [54, 71]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [54, 71]
+Current player: 0
+Turn total: 2
+Agent chooses: endTurn
+
+------------------
+Scores: [56, 71]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [56, 71]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [56, 71]
+Current player: 0
+Turn total: 2
+Agent chooses: endTurn
+
+------------------
+Scores: [58, 71]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [58, 71]
+Current player: 1
+Turn total: 6
+You rolled a 6, you must roll again.
+
+------------------
+Scores: [58, 71]
+Current player: 1
+Turn total: 11
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [58, 71]
+Current player: 1
+Turn total: 13
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [58, 71]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [58, 71]
+Current player: 0
+Turn total: 4
+Agent chooses: endTurn
+
+------------------
+Scores: [62, 71]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [62, 71]
+Current player: 1
+Turn total: 3
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [62, 71]
+Current player: 1
+Turn total: 6
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [62, 71]
+Current player: 1
+Turn total: 8
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [62, 71]
+Current player: 1
+Turn total: 11
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [62, 71]
+Current player: 1
+Turn total: 13
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [62, 71]
+Current player: 1
+Turn total: 17
+Choose (roll / endTurn): endTurn
+
+------------------
+Scores: [62, 88]
+Current player: 0
+Turn total: 0
+Agent chooses: roll
+
+------------------
+Scores: [62, 88]
+Current player: 0
+Turn total: 4
+Agent chooses: roll
+
+------------------
+Scores: [62, 88]
+Current player: 1
+Turn total: 0
+Choose (roll / endTurn): roll   
+
+------------------
+Scores: [62, 88]
+Current player: 1
+Turn total: 3
+Choose (roll / endTurn): roll
+
+------------------
+Scores: [62, 88]
+Current player: 1
+Turn total: 9
+You rolled a 6, you must roll again.
+
+------------------
+Scores: [62, 88]
+Current player: 1
+Turn total: 13
+Choose (roll / endTurn): endTurn
+
+Final scores: [62, 101]
+Winner is Human
 """
