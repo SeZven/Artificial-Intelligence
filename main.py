@@ -1,4 +1,8 @@
 import random
+from collections import defaultdict
+import pickle
+import os
+from tqdm import trange
 
 GOAL = 100 #points
 # 2 player
@@ -78,38 +82,6 @@ class DiceGamePig:
 #    game.turn(random.choice([ROLL, ENDTURN]))
 #print(game.scores,game.win)
 
-####
-
-# ai was used for the following:
-game = DiceGamePig()
-
-HUMAN = 30   # you are player 0
-
-while False:#while not game.win:
-    print("\n------------------")
-    print("Scores:", game.scores)
-    print("Current player:", game.currentPlayer)
-    print("Turn total:", game.turnTotal)
-
-    if game.currentPlayer == HUMAN:
-        action = input("Choose action (roll / endTurn): ").strip()
-
-        while action not in [ROLL, ENDTURN]:
-            action = input("Invalid. Choose (roll / endTurn): ").strip()
-
-    else:
-        action = random.choice([ROLL, ENDTURN])
-        print("Opponent chooses:", action)
-
-    game.turn(action)
-
-#print("\nFinal scores:", game.scores)
-#print("Winner is Player", 0 if game.scores[0] >= GOAL else 1)
-
-
-########
-from collections import defaultdict
-
 class QLearningAgent:
     def __init__(self):
         self.Q = defaultdict(lambda: {ROLL: 0, ENDTURN: 0})
@@ -126,8 +98,8 @@ class QLearningAgent:
 
         return max(self.Q[state], key=self.Q[state].get)
 
-    def update(self, s, a, r, s_next):
-        maxNext = max(self.Q[s_next].values())
+    def update(self, s, a, r, sNext):
+        maxNext = max(self.Q[sNext].values())
         self.Q[s][a] += self.alpha * (
             r + self.gamma * maxNext - self.Q[s][a]
         )
@@ -226,9 +198,7 @@ def playAgainstAgent(agent):
 
 
 
-import pickle
-import os
-from tqdm import trange
+
 
 def saveAgent(agent, filename):
     with open(filename, "wb") as f:
@@ -270,7 +240,7 @@ if __name__ == "__main__":
 
     for e in episodesList:
         loadAgent(agent, f"agent{e}.pkl")
-        print(evaluate(agent, 1))
+        print(evaluate(agent, 1000))
 
     #print(agent.Q)
     playAgainstAgent(agent)
