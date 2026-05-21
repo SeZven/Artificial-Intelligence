@@ -7,5 +7,5 @@ pip install tqdm
 Train and play agent:
 
 ```python
-python play.py
+python main.py
 ```
