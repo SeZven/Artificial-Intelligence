@@ -234,7 +234,7 @@ if __name__ == "__main__":
 
     #playAgainstAgent(agent)
 
-    episodesList = [100, 1000, 10000, 100000, 1000000]#, 10000000] #, 100000000, 1000000000 ]
+    episodesList = [0, 100, 1000, 10000, 100000, 1000000]#, 10000000] #, 100000000, 1000000000 ]
     trainAndSave(episodesList) # A .pkl file is a saved Python object in binary form using the pickle module.
     # converting your Python object into bytes and saving it to disk
 
